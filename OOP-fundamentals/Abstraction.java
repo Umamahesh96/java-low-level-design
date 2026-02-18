@@ -100,6 +100,13 @@ class StreamingPlayer extends MediaPlayer{
 
 public class Abstraction{
     public static void main(String[] args) {
-        
+        PlayerController audioCtrl1 = new PlayerController(new AudioPlayer("HanumanChalisa.mp3"));
+        audioCtrl1.startPlayback();
+        audioCtrl1.pausePlayback();
+        System.out.println("++++++++++++++++++");
+
+        PlayerController videoCtrl1 = new PlayerController(new VideoPlayer("Saiyaara.mp4", "1080p"));
+        videoCtrl1.startPlayback();
+        videoCtrl1.stopPlayback();
     }
 }
