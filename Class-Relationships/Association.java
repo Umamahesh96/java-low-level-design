@@ -25,27 +25,39 @@
 
 //BASED ON DIRECTION : bi-directional Association
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 
-class Developer{
-    //Developer class is holding the reference of Team class
-    private Team team;
-    public void setTeam(Team team){
-        this.team = team;
-    }
-}
-class Team{
-    //Team class holding the reference of Developer class
-    private List<Developer> developers = new ArrayList<>();
+// class Developer{
+//     //Developer class is holding the reference of Team class
+//     private Team team;
+//     public void setTeam(Team team){
+//         this.team = team;
+//     }
+// }
+// class Team{
+//     //Team class holding the reference of Developer class
+//     private List<Developer> developers = new ArrayList<>();
     
-    public void addDeveloper(Developer dev){
-        developers.add(dev);
-        dev.setTeam(this);
-    }
-}
-public class Association{
-    public static void main(String[] args) {
-        
-    }
-}
+//     public void addDeveloper(Developer dev){
+//         developers.add(dev);
+//         dev.setTeam(this);
+//     }
+// }
+
+
+//BASED ON MULTIPLICITY : one-to-one Association
+// class Profile{
+//     private User user;
+//     public void setUser(User user){
+//         this.user = user;
+//     }
+// }
+// class User{
+//     private Profile profile;
+//     public void setProfile(Profile pofile){
+//         this.profile = profile;
+//         profile.setUser(this);
+//     }
+// } 
+
