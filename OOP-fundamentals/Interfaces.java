@@ -140,41 +140,78 @@
 // }
 //----------------------------------------------------------------------------------------------------------------------------------------
 
-interface PaymentGateway{
-    public void initiatePayment(double amount);
-}
+// interface PaymentGateway{
+//     public void initiatePayment(double amount);
+// }
 
-class StripePayment implements PaymentGateway{
-    public void initiatePayment(double amount){
-        System.out.println("Payment made through Stripe with amount $"+amount);
-    }
-}
+// class StripePayment implements PaymentGateway{
+//     public void initiatePayment(double amount){
+//         System.out.println("Payment made through Stripe with amount $"+amount);
+//     }
+// }
 
-class RazorpayPayment implements PaymentGateway{
-    public void initiatePayment(double amount){
-        System.out.println("Payment made through Razorpay with amount $"+amount);
+// class RazorpayPayment implements PaymentGateway{
+//     public void initiatePayment(double amount){
+//         System.out.println("Payment made through Razorpay with amount $"+amount);
+//     }
+// }
+// class CheckoutService{
+//     private PaymentGateway gateway;
+//     public CheckoutService(PaymentGateway gateway){
+//         this.gateway = gateway;
+//     }
+//     public void setPaymentGateway(PaymentGateway gateway){
+//         this.gateway = gateway;
+//     }
+//     public void checkout(double amount){
+//         gateway.initiatePayment(amount);
+//     }
+// }
+// public class Interfaces{
+//     public static void main(String[] args) {
+//         PaymentGateway gateway1 = new StripePayment();
+//         CheckoutService service = new CheckoutService(gateway1);
+//         service.checkout(1500);
+
+//         PaymentGateway gateway2 = new RazorpayPayment();
+//         service.setPaymentGateway(gateway2);
+//         service.checkout(18);
+//     }
+// }
+//----------------------------------------------------------------------------------------------------------------------------------------
+
+
+interface NotificationService{
+    public void send(String recipient, String message);
+}
+class EmailNotifier implements NotificationService{
+    public void send(String recipient, String message){
+        System.out.println("[Email] To: "+ recipient+" | "+message);
     }
 }
-class CheckoutService{
-    private PaymentGateway gateway;
-    public CheckoutService(PaymentGateway gateway){
-        this.gateway = gateway;
+class SlackNotifier implements NotificationService{
+    public void send(String recipient, String message){
+        System.out.println("[Slack] Channel: "+recipient+" | "+message);
     }
-    public void setPaymentGateway(PaymentGateway gateway){
-        this.gateway = gateway;
-    }
-    public void checkout(double amount){
-        gateway.initiatePayment(amount);
+}
+class AlertService{
+    private NotificationService notifier;
+    public AlertService(NotificationService notifier){
+        this.notifier = notifier;
+    } 
+    public void setNotificationService(NotificationService notifier){
+        this.notifier = notifier;
+    }   
+    public void triggerAlert(String recipient, String message){
+        notifier.send(recipient, message);
     }
 }
 public class Interfaces{
     public static void main(String[] args) {
-        PaymentGateway gateway1 = new StripePayment();
-        CheckoutService service = new CheckoutService(gateway1);
-        service.checkout(1500);
-
-        PaymentGateway gateway2 = new RazorpayPayment();
-        service.setPaymentGateway(gateway2);
-        service.checkout(18);
+        AlertService service1 = new AlertService(new EmailNotifier());
+        service1.triggerAlert("maheshfromcivil@gmail.com", "DFQ");
+        
+        service1.setNotificationService(new SlackNotifier());
+        service1.triggerAlert("YoutubeChannel", "Horror Niches");
     }
 }
