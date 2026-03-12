@@ -101,40 +101,62 @@
 // }
 //----------------------------------------------------------------------------------------------------
 
-class BankAccount{
-    private String accountHolder;
-    private double balance;
-    public BankAccount(String accountHolder){
-        this.accountHolder = accountHolder;
-        this.balance = 0.0;
+// class BankAccount{
+//     private String accountHolder;
+//     private double balance;
+//     public BankAccount(String accountHolder){
+//         this.accountHolder = accountHolder;
+//         this.balance = 0.0;
+//     }
+//     public void deposit(double amount){
+//         if(amount < 0){
+//             throw new IllegalArgumentException("Deposit amount should be positive");
+//         }
+//         balance += amount;
+//     }
+//     public void withdraw(double amount){
+//         if(amount < 0){
+//             throw new IllegalArgumentException("Withdraw amount should be positive");
+//         }
+//         if(amount > balance){
+//             throw new IllegalArgumentException("Insufficient funds");
+//         }
+//         balance -= amount;
+//     }
+//     public double getBalance(){
+//         return balance;
+//     }
+//     public String getAccountHolder(){
+//         return accountHolder;
+//     }
+// }
+// public class Encapsulation{
+//     public static void main(String[] args) {
+//         BankAccount acc1 = new BankAccount("Uma Mahesh");
+//         acc1.deposit(1000);
+//         acc1.withdraw(150);
+//         System.out.println(acc1.getBalance());
+//     }
+// }
+//----------------------------------------------------------------------------------------------------
+
+class PaymentProcesser{
+    private String cardNumber;
+    private double amount;
+    public PaymentProcesser(String cardNumber, double amount){
+        this.cardNumber = maskCardNumber(cardNumber);
+        this.amount = amount;
     }
-    public void deposit(double amount){
-        if(amount < 0){
-            throw new IllegalArgumentException("Deposit amount should be positive");
-        }
-        balance += amount;
+    public String maskCardNumber(String cardNumber){
+        return "****_****_****_"+cardNumber.substring(cardNumber.length()-4);
     }
-    public void withdraw(double amount){
-        if(amount < 0){
-            throw new IllegalArgumentException("Withdraw amount should be positive");
-        }
-        if(amount > balance){
-            throw new IllegalArgumentException("Insufficient funds");
-        }
-        balance -= amount;
-    }
-    public double getBalance(){
-        return balance;
-    }
-    public String getAccountHolder(){
-        return accountHolder;
+    public void processPayment(){
+        System.out.println("Processing payment of $"+amount+" for card "+cardNumber);
     }
 }
 public class Encapsulation{
     public static void main(String[] args) {
-        BankAccount acc1 = new BankAccount("Uma Mahesh");
-        acc1.deposit(1000);
-        acc1.withdraw(150);
-        System.out.println(acc1.getBalance());
+        PaymentProcesser p1 = new PaymentProcesser("6402789658965632",  36.96);
+        p1.processPayment();
     }
 }
