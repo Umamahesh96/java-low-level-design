@@ -140,29 +140,41 @@
 // }
 //----------------------------------------------------------------------------------------------------------------------------------------
 
-
-class AlertService{
-    private NotificationService notifier;
-    public AlertService(NotificationService notifier){
-        this.notifier = notifier;
-    }
-    public void triggerAlert(String recipient, String issue){
-        notifier.send(recipient, issue);
-    }
+interface PaymentGateway{
+    public void initiatePayment(double amount);
 }
 
-interface NotificationService{
-    void send(String recipient, String message);
-}
-class EmailNotifier implements NotificationService{
-    public void send(String recipient, String message){
-        System.out.println("Message sent to - "
-            +recipient+" message is "+message);
+class StripePayment implements PaymentGateway{
+    public void initiatePayment(double amount){
+        System.out.println("Payment made through Stripe with amount $"+amount);
     }
 }
-class SlackNotifier implements NotificationService{
-    public void send(String recipient, String message){
-        System.out.println("Message sent to - "
-            +recipient+" message is "+message);
+
+class RazorpayPayment implements PaymentGateway{
+    public void initiatePayment(double amount){
+        System.out.println("Payment made through Razorpay with amount $"+amount);
+    }
+}
+class CheckoutService{
+    private PaymentGateway gateway;
+    public CheckoutService(PaymentGateway gateway){
+        this.gateway = gateway;
+    }
+    public void setPaymentGateway(PaymentGateway gateway){
+        this.gateway = gateway;
+    }
+    public void checkout(double amount){
+        gateway.initiatePayment(amount);
+    }
+}
+public class Interfaces{
+    public static void main(String[] args) {
+        PaymentGateway gateway1 = new StripePayment();
+        CheckoutService service = new CheckoutService(gateway1);
+        service.checkout(1500);
+
+        PaymentGateway gateway2 = new RazorpayPayment();
+        service.setPaymentGateway(gateway2);
+        service.checkout(18);
     }
 }
