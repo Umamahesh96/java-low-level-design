@@ -1,8 +1,4 @@
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
-// class PlayerController{
 //     private MediaPlayer player;
 //     public PlayerController(MediaPlayer player){
 //         this.player = player;
@@ -116,45 +112,150 @@ import java.time.format.DateTimeFormatter;
 // }
 //-----------------------------------------------------------------------------------------------
 
-abstract class Logger{
-    protected String level;
-    public Logger(String level){
-        this.level = level;
+// abstract class Logger{
+//     protected String level;
+//     public Logger(String level){
+//         this.level = level;
+//     }
+//     //Abstract method: every implementing class must provide the HOW
+//     abstract void log(String message);
+//     //Concrete method
+//     String formatMessage(String message){
+//         String timestamp = LocalDateTime.now()
+//                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+//         return "["+timestamp+"] ["+level+"] "+message;
+//     }
+// }
+// class ConsoleLogger extends Logger{
+//     public ConsoleLogger(String level){
+//         super(level);
+//     }
+//     @Override
+//     void log(String message){
+//         System.out.println(formatMessage(message));
+//     }
+// }
+// class FileLogger extends Logger{
+//     private String filePath;
+//     public FileLogger(String level, String filePath){
+//         super(level);
+//         this.filePath = filePath;
+//     }
+//     @Override
+//     void log(String message){
+//         System.out.println("Writing to "+filePath+": "+formatMessage(message));
+//     }
+// }
+// public class Abstraction{
+//     public static void main(String[] args) {
+//         Logger consoleLogger = new ConsoleLogger("INFO");
+//         Logger fileLogger = new FileLogger("ERROR", "app.log");
+//         consoleLogger.log("Application started");
+//         fileLogger.log("Something went wrong");
+//     }
+// }
+//-----------------------------------------------------------------------------------------------
+
+abstract class MediaPlayer{
+    protected String playerName;
+    public MediaPlayer(String playerName){
+        this.playerName = playerName;
     }
-    //Abstract method: every implementing class must provide the HOW
-    abstract void log(String message);
-    //Concrete method
-    String formatMessage(String message){
-        String timestamp = LocalDateTime.now()
-                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        return "["+timestamp+"] ["+level+"] "+message;
+    abstract void play();
+    abstract void pause();
+    abstract void stop();
+    void displayStatus(){
+        System.out.println("["+playerName+"] Status: Ready");
+    }
+    void logAction(String action){
+        System.out.println("["+playerName+"] Action: "+action);
     }
 }
-class ConsoleLogger extends Logger{
-    public ConsoleLogger(String level){
-        super(level);
+class AudioPlayer extends MediaPlayer{
+    private String audioFile;
+    public AudioPlayer(String audioFile){
+        super("Audio Player");
+        this.audioFile = audioFile;
     }
     @Override
-    void log(String message){
-        System.out.println(formatMessage(message));
+    public void play(){
+        logAction("Playing audio: "+audioFile);
+    }
+    @Override
+    public void pause(){
+        logAction("Paused audio: "+audioFile);
+    }
+    @Override
+    public void stop(){
+        logAction("Stopped audio: "+audioFile);
     }
 }
-class FileLogger extends Logger{
-    private String filePath;
-    public FileLogger(String level, String filePath){
-        super(level);
-        this.filePath = filePath;
+class VideoPlayer extends MediaPlayer{
+    private String videoFile;
+    private String resolution;
+    public VideoPlayer(String videoFile, String resolution){
+        super("Video Player");
+        this.videoFile = videoFile;
+        this.resolution = resolution;
     }
     @Override
-    void log(String message){
-        System.out.println("Writing to "+filePath+": "+formatMessage(message));
+    public void play(){
+        logAction("Playing video: "+videoFile+" at resolution "+resolution);
+    }
+    @Override
+    public void pause(){
+        logAction("Paused video: "+videoFile);
+    }
+    @Override
+    public void stop(){
+        logAction("Stopped video: "+videoFile);
+    }
+}
+class StreamingPlayer extends MediaPlayer{
+    private String streamUrl;
+    private int bufferSize;
+    public StreamingPlayer(String streamUrl, int bufferSize){
+        super("Streaming Player");
+        this.streamUrl = streamUrl;
+        this.bufferSize = bufferSize;
+    }
+    @Override
+    public void play(){
+        logAction("Streaming from: "+streamUrl+" (buffer: "+bufferSize+ "KB)");
+    }   
+    @Override
+    public void pause(){
+        logAction("Paused stream: "+streamUrl);
+    }
+    @Override
+    public void stop(){
+        logAction("Stopped stream: "+streamUrl);
+    }
+}
+class PlayerController{
+    private MediaPlayer player;
+    public PlayerController(MediaPlayer player){
+        this.player = player;
+    }
+    void startPlayback(){
+        player.displayStatus();
+        player.play();
+    }
+    void pausePlayback(){
+        player.pause();
+    }
+    void stopPlayback(){
+        player.stop();
     }
 }
 public class Abstraction{
     public static void main(String[] args) {
-        Logger consoleLogger = new ConsoleLogger("INFO");
-        Logger fileLogger = new FileLogger("ERROR", "app.log");
-        consoleLogger.log("Application started");
-        fileLogger.log("Something went wrong");
+        PlayerController audioCtrl = new PlayerController(new AudioPlayer("song.mp3"));
+        audioCtrl.startPlayback();
+        audioCtrl.pausePlayback();
+        System.out.println("");
+        PlayerController videoCtrl = new PlayerController(new VideoPlayer("video.mp4", "1080px"));
+        videoCtrl.startPlayback();
+        videoCtrl.stopPlayback();
     }
 }
