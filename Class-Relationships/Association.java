@@ -24,26 +24,92 @@
 // }
 
 //Based on direction : bi-directional Association
-import java.util.*;
-class Developer{
-    private Team team;
-    public void setTeam(Team team){
-        this.team = team;
+// import java.util.*;
+// class Developer{
+//     private Team team;
+//     public void setTeam(Team team){
+//         this.team = team;
+//     }
+// }
+// class Team{
+//     private List<Developer> developers = new ArrayList<>();
+//     public void addDeveloper(Developer dev){
+//         developers.add(dev);
+//         dev.setTeam(this);
+//     }
+// }
+// public class Association{
+//     public static void main(String[] args) {
+//         Developer mahesh = new Developer();
+        
+//         Team JFS = new Team();
+//         JFS.addDeveloper(mahesh);
+
+//     }
+// }
+//---------------------------------------------------------------------------------
+
+//Based on Direction - uni directional Association
+// class PaymentGateway{
+//     public void processPayment(double amount){
+//         System.out.println("Payment processed with $"+amount);
+//     }
+// }
+// class Order{
+//     private PaymentGateway gateway; 
+//     public Order(PaymentGateway gateway){
+//         this.gateway = gateway;
+//     }
+//     public void checkout(){
+//         gateway.processPayment(456.32);
+//     }
+// }
+
+//Based on Direction - bi-directional Association
+// import java.util.*;
+// class Developer{
+//     private Team team;
+//     public void setTeam(Team team){
+//         this.team = team;
+//     }
+// }
+// class Team{
+//     private List<Developer> developers;
+//     public void addDeveloper(Developer dev){
+//         developers.add(dev);
+//         dev.setTeam(this);
+//     }
+// }
+// public class Association{
+//     public static void main(String[] args) {
+//         Developer dev1 = new Developer();
+//         Developer dev2 = new Developer();
+        
+//         Team JFS = new Team();
+//         JFS.addDeveloper(dev1);
+//     }
+// }
+//---------------------------------------------------------------------------------
+
+//Based on Multiplicity : one-to-one Association
+class Profile{
+    private User user;
+    public void setUser(User user){
+        this.user = user;
     }
 }
-class Team{
-    private List<Developer> developers = new ArrayList<>();
-    public void addDeveloper(Developer dev){
-        developers.add(dev);
-        dev.setTeam(this);
+class User{
+    private Profile profile;
+    public void setProfile(Profile profile){
+        this.profile = profile;
+        profile.setUser(this);
     }
 }
 public class Association{
     public static void main(String[] args) {
-        Developer mahesh = new Developer();
-        
-        Team JFS = new Team();
-        JFS.addDeveloper(mahesh);
+        User mahesh = new User();
+        User hanuma = new User();
 
+        mahesh.setProfile(new Profile());
     }
 }
