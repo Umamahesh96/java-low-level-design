@@ -179,12 +179,14 @@ public class Association{
     public static void main(String[] args) {
         User mahesh = new User("mahesh");
         User yashwin = new User("Yashwin");
+        User sravani = new User("Sravani");
 
         Group malaysia = new Group("Malaysia");
         Group goodFellows = new Group("Good Fellows");
         
         mahesh.joinGroup(malaysia);
         yashwin.joinGroup(malaysia);
+        sravani.joinGroup(malaysia);
 
         yashwin.joinGroup(goodFellows);
 
