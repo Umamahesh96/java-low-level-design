@@ -92,24 +92,40 @@
 //---------------------------------------------------------------------------------
 
 //Based on Multiplicity : one-to-one Association
-class Profile{
-    private User user;
-    public void setUser(User user){
-        this.user = user;
-    }
-}
-class User{
-    private Profile profile;
-    public void setProfile(Profile profile){
-        this.profile = profile;
-        profile.setUser(this);
-    }
-}
-public class Association{
-    public static void main(String[] args) {
-        User mahesh = new User();
-        User hanuma = new User();
+// class Profile{
+//     private User user;
+//     public void setUser(User user){
+//         this.user = user;
+//     }
+// }
+// class User{
+//     private Profile profile;
+//     public void setProfile(Profile profile){
+//         this.profile = profile;
+//         profile.setUser(this);
+//     }
+// }
+// public class Association{
+//     public static void main(String[] args) {
+//         User mahesh = new User();
+//         User hanuma = new User();
 
-        mahesh.setProfile(new Profile());
+//         mahesh.setProfile(new Profile());
+//     }
+// }
+//---------------------------------------------------------------------------------
+
+//Baced on Multiplicity : One-to-Many association
+class Issue{
+    private Project project;
+    public void setProject(Project project){
+        this.project = project;
+    }
+}
+class Project{
+    private Issue issue;
+    public void addIssue(Issue issue){
+        this.issue = issue;
+        issue.setProject(this);
     }
 }
