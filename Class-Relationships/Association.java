@@ -116,16 +116,79 @@
 //---------------------------------------------------------------------------------
 
 //Baced on Multiplicity : One-to-Many association
-class Issue{
-    private Project project;
-    public void setProject(Project project){
-        this.project = project;
+// class Issue{
+//     private Project project;
+//     public void setProject(Project project){
+//         this.project = project;
+//     }
+// }
+// class Project{
+//     private Issue issue;
+//     public void addIssue(Issue issue){
+//         this.issue = issue;
+//         issue.setProject(this);
+//     }
+// }
+//---------------------------------------------------------------------------------
+
+//Based on Multiplicity: Mant-to-Many association
+import java.util.*;
+class User{
+    private String name;
+    private List<Group> groups = new ArrayList<>();
+    public User(String name){
+        this.name = name;
+    }
+    public void joinGroup(Group group){
+        if(!groups.contains(group)){
+            groups.add(group);
+            group.addUser(this);
+        }
+    }
+    public String getName(){
+        return name;
+    }
+    public List<Group> getGroups(){
+        return groups;
+    }
+    @Override
+    public String toString(){
+        return name;
     }
 }
-class Project{
-    private Issue issue;
-    public void addIssue(Issue issue){
-        this.issue = issue;
-        issue.setProject(this);
+class Group{
+    private String name;
+    private List<User> users = new ArrayList<>();
+    public Group(String name){
+        this.name = name;
+    }
+    public void addUser(User user){
+        if(!users.contains(user)){
+            users.add(user);
+            user.joinGroup(this);
+        }
+    }
+    public String getName(){
+        return name;
+    }
+    public List<User> getUsers(){
+        return users;
+    }
+}
+public class Association{
+    public static void main(String[] args) {
+        User mahesh = new User("mahesh");
+        User yashwin = new User("Yashwin");
+
+        Group malaysia = new Group("Malaysia");
+        Group goodFellows = new Group("Good Fellows");
+        
+        mahesh.joinGroup(malaysia);
+        yashwin.joinGroup(malaysia);
+
+        yashwin.joinGroup(goodFellows);
+
+        System.out.println("Users in Good Fellows group: "+goodFellows.getUsers());
+        System.out.println("Users in malaysia group: "+malaysia.getUsers());
     }
 }
