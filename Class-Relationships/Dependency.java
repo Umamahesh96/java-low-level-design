@@ -43,31 +43,87 @@
 // }
 //---------------------------------------------------------------------------------------------------------
 
-class NotificationService{
-    private Sender sender;
-    public NotificationService(Sender sender){
-        this.sender = sender;
+// class NotificationService{
+//     private Sender sender;
+//     public NotificationService(Sender sender){
+//         this.sender = sender;
+//     }
+//     public void notifyUser(String message){
+//         sender.send(message);
+//     } 
+// }
+// interface Sender{
+//     void send(String message);
+// }
+// class EmailSender implements Sender{
+//     public void send(String message){
+//         System.out.println("Sending via Email with message : "+message);
+//     }
+// }
+// class SmsSender implements Sender{
+//     public void send(String message){
+//         System.out.println("Sending via Sms with message : "+message);
+//     }
+// }
+// public class Dependency{
+//     public static void main(String[] args) {
+//         NotificationService emailNotificationService = new NotificationService(new EmailSender());
+//         emailNotificationService.notifyUser("Hare Krishna by email");
+//     }
+// }
+//---------------------------------------------------------------------------------------------------------
+
+class SeatValidator{
+    public boolean isAvailable(String eventId, String seatNumber){
+        System.out.println("Checking seat "+seatNumber+"for event "+eventId);
+        return true;
     }
-    public void notifyUser(String message){
-        sender.send(message);
-    } 
 }
-interface Sender{
-    void send(String message);
-}
-class EmailSender implements Sender{
-    public void send(String message){
-        System.out.println("Sending via Email with message : "+message);
+class PaymentProcessor{
+    public boolean charge(String email, double amount){
+        System.out.println("Charging $"+amount+" to "+email);
+        return true;
     }
 }
-class SmsSender implements Sender{
-    public void send(String message){
-        System.out.println("Sending via Sms with message : "+message);
+class QRCodeGenerator{
+    public String generate(String eventId, String seatNumber){
+        String qrCode = "QR-" + eventId + "-" + seatNumber;
+        System.out.println("Generated QR code: "+qrCode);
+        return qrCode;
+    }
+}
+class EmailService{
+    public void sendConfirmation(String email, String qrCode){
+        System.out.println("Sending confirmation to "+email+"with code "+qrCode);
+    }
+}
+class TicketBookingService{
+    public boolean bookTicket(String eventId, String seatNumber, String email, double amount,
+                            SeatValidator validator, PaymentProcessor payment, 
+                            QRCodeGenerator qrGenerator, EmailService emailService){
+        if(!validator.isAvailable(eventId, seatNumber)){
+            System.out.println("Seat not available");
+            return false;
+        }
+        if(!payment.charge(email, amount)){
+            System.out.println("Payment failed");
+            return false;
+        }
+        String qrCode = qrGenerator.generate(eventId, seatNumber);
+        emailService.sendConfirmation(email, qrCode);
+        System.out.println("Booking confirmed!");
+        return true;
     }
 }
 public class Dependency{
     public static void main(String[] args) {
-        NotificationService emailNotificationService = new NotificationService(new EmailSender());
-        emailNotificationService.notifyUser("Hare Krishna by email");
+        TicketBookingService bookingService = new TicketBookingService();
+
+        SeatValidator validator = new SeatValidator();
+        PaymentProcessor payment = new PaymentProcessor();
+        QRCodeGenerator qrGenerator = new QRCodeGenerator();
+        EmailService emailServcie = new EmailService();
+
+        bookingService.bookTicket("CONF-2025", "A12", "mahesh@gmail.com", 100, validator, payment, qrGenerator, emailServcie);
     }
 }
