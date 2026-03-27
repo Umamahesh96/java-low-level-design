@@ -15,6 +15,14 @@ class MessagingService{
     }
 }
 
+//Applying DRY
+class EmailValidator{
+    public static boolean isValid(String email){
+        return email != null &&
+                email.contains("@") &&
+                (email.endsWith(".com") || email.endsWith(".org"));
+    }
+}
 public class Dry {
     
 }
